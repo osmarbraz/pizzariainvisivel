@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pizzaria Invisível</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      background-color: #fff8f0; 
+      color: #333;
+      margin: 40px;
+    }
+    h1 { color: #c0392b; }
+    label { display: block; margin-top: 10px; }
+    .pizza-item { margin: 10px 0; }
+    button {
+      background-color: #c0392b; color: white;
+      border: none; padding: 10px 20px;
+      border-radius: 8px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Monte seu Pedido 🍕</h1>
+
+  <form>
+    <label for="nome">Nome do Cliente:</label>
+    <input type="text" id="nome" required>
+
+    <label for="endereco">Endereço de Entrega:</label>
+    <input type="text" id="endereco" required>
+
+    <div class="pizza-item">
+      <h3>🍕 Margherita - R$ 39,90</h3>
+      <button type="button">Adicionar ao Carrinho</button>
+    </div>
+
+    <div class="pizza-item">
+      <h3>🍕 Calabresa - R$ 42,00</h3>
+      <button type="button">Adicionar ao Carrinho</button>
+    </div>
+
+    <br>
+    <button type="submit">Finalizar Pedido</button>
+  </form>
+
+  <p id="mensagem" style="margin-top:20px; color:green;"></p>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('mensagem').textContent = '✅ Pedido recebido! Previsão de entrega: 40 min.';
+    });
+  </script>
+</body>
+</html>

@@ -1,2 +1,2 @@
-# pizzariainvisivel
-Pizzaria Invisível
+# Pzzaria invisível
+Exemplos para o exercício da Pizzaria Invisível.

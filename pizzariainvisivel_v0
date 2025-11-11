@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Pizzaria Invisível</title>
+  <style>
+    /* Cores com baixo contraste */
+    body {
+      background-color: #100;
+      color: #533;
+      font-family: Arial;
+    }
+
+    /* Botões pequenos e sem destaque */
+    button {
+      background-color: #888;
+      color: #338;
+      border: none;
+      padding: 5px;
+      margin: 5px;
+    }
+
+    /* Layout confuso */
+    .pizza-item {
+      margin: 5px;
+    }
+
+    /* Texto centralizado demais e sem hierarquia visual */
+    h1 {
+      text-align: center;
+      color: #555;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Pizzaria Invisível</h1>
+
+  <!-- Campos sem rótulos -->
+  <input type="text" placeholder="Digite algo..."><br>
+  <input type="text" placeholder="Outro campo..."><br>
+
+  <!-- Lista de pizzas confusa, sem preços e sem identificação -->
+  <div>
+    <p>Pizza 1</p>
+    <button>Enviar</button>
+  </div>
+
+  <div>
+    <p>Pizza 2</p>
+    <button>Enviar</button>
+  </div>
+
+  <div>
+    <p>Pizza 3</p>
+    <button>Enviar</button>
+  </div>
+
+  <!-- Nenhum feedback visual ou mensagem após clique -->
+  <!-- Nenhum total exibido -->
+  <!-- Nenhum aviso de erro ou sucesso -->
+  <!-- Nenhum agrupamento visual dos elementos -->
+
+  <form>
+    <!-- Botão sem contexto -->
+    <button>Enviar</button>
+  </form>
+
+</body>
+</html>

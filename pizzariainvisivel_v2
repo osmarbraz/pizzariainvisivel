@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pizzaria Invisível 🍕</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* === Estilo base e responsivo === */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff8f0;
+      color: #333;
+      margin: 40px;
+      transition: background-color 0.5s;
+    }
+
+    h1, h2 {
+      color: #c0392b;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    button {
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #e74c3c;
+      transform: scale(1.05);
+    }
+
+    .pizza-item {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px 0;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .pizza-item h3 {
+      margin: 0 0 10px 0;
+    }
+
+    #busca {
+      margin: 15px 0;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    #carrinho {
+      border-top: 3px solid #c0392b;
+      margin-top: 30px;
+      padding-top: 20px;
+    }
+
+    #carrinho ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #mensagem {
+      color: green;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    /* === Responsividade === */
+    @media (max-width: 600px) {
+      body { font-size: 14px; margin: 10px; }
+      .pizza-item { display: block; padding: 10px; }
+      button { width: 100%; margin-top: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Monte seu Pedido 🍕</h1>
+
+  <!-- Campo de busca -->
+  <input type="text" id="busca" placeholder="Buscar pizza...">
+
+  <!-- Lista de Pizzas -->
+  <div class="pizza-item">
+    <h3>🍕 Margherita - R$ 39,90</h3>
+    <button type="button" aria-label="Adicionar pizza Margherita ao carrinho">Adicionar ao Carrinho</button>
+  </div>
+
+  <div class="pizza-item">
+    <h3>🍕 Calabresa - R$ 42,00</h3>
+    <button type="button" aria-label="Adicionar pizza Calabresa ao carrinho">Adicionar ao Carrinho</button>
+  </div>
+
+  <div class="pizza-item">
+    <h3>🍕 Quatro Queijos - R$ 45,50</h3>
+    <button type="button" aria-label="Adicionar pizza Quatro Queijos ao carrinho">Adicionar ao Carrinho</button>
+  </div>
+
+  <div class="pizza-item">
+    <h3>🍕 Frango com Catupiry - R$ 44,00</h3>
+    <button type="button" aria-label="Adicionar pizza Frango com Catupiry ao carrinho">Adicionar ao Carrinho</button>
+  </div>
+
+  <!-- Carrinho -->
+  <div id="carrinho">
+    <h2>🧾 Seu Carrinho</h2>
+    <ul id="itens-carrinho"></ul>
+    <p><strong>Total:</strong> R$ <span id="total">0.00</span></p>
+  </div>
+
+  <!-- Formulário do Pedido -->
+  <h2>Dados do Pedido</h2>
+  <form id="pedido-form">
+    <label for="nome">Nome do Cliente:</label>
+    <input type="text" id="nome" required>
+
+    <label for="endereco">Endereço de Entrega:</label>
+    <input type="text" id="endereco" required>
+
+    <br><br>
+    <button type="submit" id="finalizar">Finalizar Pedido</button>
+  </form>
+
+  <p id="mensagem"></p>
+
+  <script>
+    // ============================
+    // === Carrinho Dinâmico ===
+    // ============================
+    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    let total = parseFloat(localStorage.getItem('total')) || 0;
+    const listaCarrinho = document.getElementById('itens-carrinho');
+    const totalElem = document.getElementById('total');
+
+    // Atualiza exibição inicial
+    function atualizarCarrinho() {
+      listaCarrinho.innerHTML = '';
+      carrinho.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        listaCarrinho.appendChild(li);
+      });
+      totalElem.textContent = total.toFixed(2);
+    }
+    atualizarCarrinho();
+
+    // Adiciona pizza ao carrinho
+    document.querySelectorAll('.pizza-item button').forEach(button => {
+      button.addEventListener('click', () => {
+        const nome = button.parentElement.querySelector('h3').textContent;
+        const preco = parseFloat(nome.match(/R\$ ([\d,]+)/)[1].replace(',', '.'));
+        carrinho.push(nome);
+        total += preco;
+        atualizarCarrinho();
+        localStorage.setItem('carrinho', JSON.stringify(carrinho));
+        localStorage.setItem('total', total);
+
+        // Feedback visual
+        const aviso = document.createElement('p');
+        aviso.textContent = '🍕 Pizza adicionada com sucesso!';
+        aviso.style.color = 'green';
+        document.body.appendChild(aviso);
+        setTimeout(() => aviso.remove(), 2000);
+      });
+    });
+
+    // ============================
+    // === Busca de Pizzas ===
+    // ============================
+    document.getElementById('busca').addEventListener('input', e => {
+      const termo = e.target.value.toLowerCase();
+      document.querySelectorAll('.pizza-item').forEach(item => {
+        const nome = item.textContent.toLowerCase();
+        item.style.display = nome.includes(termo) ? '' : 'none';
+      });
+    });
+
+    // ============================
+    // === Validação e Envio ===
+    // ============================
+    document.getElementById('pedido-form').addEventListener('submit', e => {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value.trim();
+      const endereco = document.getElementById('endereco').value.trim();
+
+      if (!nome || !endereco) {
+        alert('⚠️ Por favor, preencha nome e endereço.');
+        return;
+      }
+
+      if (carrinho.length === 0) {
+        alert('🛒 Seu carrinho está vazio. Adicione ao menos uma pizza.');
+        return;
+      }
+
+      document.getElementById('mensagem').textContent =
+        `✅ Pedido confirmado! Obrigado, ${nome}! 
+         Entrega para ${endereco}. Total: R$ ${total.toFixed(2)}.`;
+
+      // Limpa dados após confirmação
+      localStorage.removeItem('carrinho');
+      localStorage.removeItem('total');
+      carrinho = [];
+      total = 0;
+      atualizarCarrinho();
+      document.getElementById('pedido-form').reset();
+    });
+  </script>
+</body>
+</html>
